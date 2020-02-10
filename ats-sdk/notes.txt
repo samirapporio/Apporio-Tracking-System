@@ -1,0 +1,28 @@
+Points to be write in document
+
+---> It automatically check the location permission as well.
+
+// web hooks
+// api that gives all ats ids according provided radius and ats_ids
+
+
+
+(1) Enable or disable log
+(2) Location fetch Interval
+(3) enable disable developer mode
+(4) Setting pending intent for clicking over notification
+(5) it is important to give permission and add dependencies in main app as well other library will not fetch location by itself
+(6) get ATS id that will fetch just after device gets connected from server
+(7) Explanation about log stash sync rate that sync data from DB according to this rate
+(8) For adding a listening key (ie ats_id) to listen other target device, developer can also add other key as well rather than ats_id and can send event via test API
+(9) Removing a particular listener
+(10) Remove all listeners will remove all listeners from server first (one by one) the remove listeners from local preferences.
+(11) add , remove and get tag
+(12) listen to tag and explain logic behind this tag listener.
+(13) stop listening tag will not take any input cause at a time user can list only one tag , but can listen more than one listener.
+(14) start and end trip concept explanation
+--> force location update feature that is before ending trip it is important to push all remaining location that is being cashed locally in library itself
+
+
+// Pending test use case
+// (1) if there are lots of location stack exist in library and certainly if developers ends the trip then there could be condition generated polyline will be incorrect.
