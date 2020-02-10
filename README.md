@@ -105,7 +105,7 @@ Ats is a universal solution for the developer that is a basic need of creating t
 
     @Override
     public void onReceiveLocation(Location location) {
-
+          // use location in your code
     }
   }
   ```
