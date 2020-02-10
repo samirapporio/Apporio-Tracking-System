@@ -28,7 +28,7 @@ Ats is a universal solution for the developer that is a basic need of creating t
 
   In app level gradle add the implementation 
   ```sh
-  implementation 'com.github.User:Repo:1.0.5'
+  implementation 'com.github.samirapporio:Apporio-Tracking-System:1.0.1'
   ```
   Allow follwing permission in order to connect your app wtih socket server and fetching location.
    ```sh 
