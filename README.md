@@ -84,7 +84,29 @@ Ats is a universal solution for the developer that is a basic need of creating t
   
   Register this service in you manifest class
   ```sh
-   <service android:name=".MyService"/>
+   <?xml version="1.0" encoding="utf-8"?>
+  <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.apporioinfolabs.ats_tracking_sdk">
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:name=".MainApplication">
+        <activity android:name=".MainActivity">
+           . . . 
+        </activity>
+        <service android:name=".MyService"/>
+
+    </application>
+
+  </manifest>
   ```
   
   To start this service you can do:
