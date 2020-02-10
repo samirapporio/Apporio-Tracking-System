@@ -92,16 +92,7 @@ Ats is a universal solution for the developer that is a basic need of creating t
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:name=".MainApplication">
-        <activity android:name=".MainActivity">
            . . . 
-        </activity>
         <service android:name=".MyService"/>
 
     </application>
