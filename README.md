@@ -70,9 +70,36 @@ Ats is a universal solution for the developer that is a basic need of creating t
 
 
 
-
-
 - #### Step Four
+  Create you service that extends library location service "AtsLocationServiceClass"
+  ```sh
+  public class MyService extends AtsLocationServiceClass {
+
+    @Override
+    public void onReceiveLocation(Location location) {
+
+    }
+  }
+  ```
+  
+  Register this service in you manifest class
+  ```sh
+   <service android:name=".MyService"/>
+  ```
+  
+  To start this service you can do:
+  ```sh
+  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        Toast.makeText(this, "starting foregorund service.", Toast.LENGTH_SHORT).show();
+        startForegroundService(new Intent(this, MyService.class));
+    } else { // normal
+        Toast.makeText(this, "Starting normal service.", Toast.LENGTH_SHORT).show();
+        startService(new Intent(this, MyService.class));
+ }
+  ```
+
+
+- #### Step Five
   Set your listeners and tag for tracking, methods list are as follows
   ###### getAtsid()
   ```sh
