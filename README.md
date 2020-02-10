@@ -39,19 +39,47 @@ Ats is a universal solution for the developer that is a basic need of creating t
 - #### Step Three
   In Your Main Application Class  (Initial setup)
   ```sh
-    ATS.startInit(this).setAppId("APP_ID_OBTAINED_IN_STEP_ONE")
-            .fetchLocationWhenVehicleIsStop(false)
-            .enableLogs(true)
-            .setLocationInterval(6000)
-            .setDeveloperMode(true)
-            .setNotificationTittle("APPLICATION_NAME")
-            .setNotificationContent("CONTENT WHEN NOTIFICATION IS SHOWING WHILE FETCHING LOCATION")
-            .setConnectedStateColor(Color.argb(0, 102, 0 , 204))
-            .setDisconnectedColor(Color.argb(0 , 255, 255, 102))
-            .setSocketEndPoint("NA")
-            .setNotificationIcon(R.drawable.samll_notification_icon)
-            .init();
+  public class MainApplication extends Application {
+
+    ATS.Builder ats ;
+    String authToken  = "APP ID GOES HERE" ;
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        ATS.startInit(this)
+                .setAppId(""+authToken)
+                .fetchLocationWhenVehicleIsStop(false)
+                .enableLogs(true)
+                .setLocationInterval(6000)
+                .setDeveloperMode(true)
+                .setNotificationTittle("Main Application Name")
+                .setNotificationContent("Some Content that will run once the location service is started.")
+                .setConnectedStateColor(Color.argb(0, 102, 0 , 204))
+                .setDisconnectedColor(Color.argb(0 , 255, 255, 102))
+                .setSocketEndPoint("http://192.168.1.33:3027")
+                .setNotificationIcon(R.drawable.samll_notification_icon)
+                .init();
+    }
+  }
   ```
+  
+  Don't forget to register this applicaiton class i your manifest
+  ```sh
+  <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:name=".MainApplication">
+       
+    . . . 
+    </application>
+  ```
+  
+  
 
     
 
@@ -108,7 +136,7 @@ Ats is a universal solution for the developer that is a basic need of creating t
     } else { // normal
         Toast.makeText(this, "Starting normal service.", Toast.LENGTH_SHORT).show();
         startService(new Intent(this, MyService.class));
- }
+  }
   ```
 
 
