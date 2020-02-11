@@ -102,8 +102,8 @@ public class NotificationManager  {
             mBuilder.setColor(connectivity.equals(""+SocketManager.SOCKET_CONNECTED) ? ATS.mBuilder.SocketConnectedColor : ATS.mBuilder.SocketDisConnectedColor );
             manager.notify(1, mBuilder.build());
         }else{
-            mBigRemoteViews.setTextViewText(R.id.socket_connected_state, connectivity.equals(""+SocketManager.SOCKET_CONNECTED)?"Socket: Connected":"Socket: Disconnected");
-            mBigRemoteViews.setTextColor(R.id.socket_connected_state, connectivity.equals(""+SocketManager.SOCKET_CONNECTED)?  ATS.mBuilder.SocketConnectedColor : ATS.mBuilder.SocketDisConnectedColor );
+            mBigRemoteViews.setTextViewText(R.id.socket_connected_state, connectivity.equals(""+SocketManager.SOCKET_CONNECTED)?"Socket: CONNECTED":"Socket: DISCONNECTED");
+//            mBigRemoteViews.setTextColor(R.id.socket_connected_state, connectivity.equals(""+SocketManager.SOCKET_CONNECTED)?  ATS.mBuilder.SocketConnectedColor : ATS.mBuilder.SocketDisConnectedColor );
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
                 mNotificationManager.notify(NOTIF_ID, mNotification);
             }else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -130,6 +130,7 @@ public class NotificationManager  {
 
         if (ATS.mBuilder.IsDevelperMode) {
             mBigRemoteViews.setTextViewText(R.id.bigger_notification_text, ""+data);
+            mBigRemoteViews.setTextViewText(R.id.socket_connected_state, SocketManager.isSocketConnected()?"Socket: CONNECTED":"Socket: DISCONNECTED");
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
                 mNotificationManager.notify(NOTIF_ID, mNotification);
             }else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {

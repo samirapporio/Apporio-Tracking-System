@@ -31,7 +31,7 @@ public class MainApplication extends Application {
                 .setNotificationContent("Some Content that will run once the location service is started.")
 //                .setConnectedStateColor(Color.argb(0, 102, 0 , 204))
 //                .setDisconnectedColor(Color.argb(0 , 255, 255, 102))
-                .setSocketEndPoint("http://192.168.1.33:3027")
+//                .setSocketEndPoint("http://192.168.1.33:3027")
                 .setNotificationIcon(R.drawable.samll_notification_icon)
                 .init();
 

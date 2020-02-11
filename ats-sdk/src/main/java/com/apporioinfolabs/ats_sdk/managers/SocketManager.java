@@ -71,12 +71,16 @@ public class SocketManager {
             IO.Options opts = new IO.Options();
             opts.forceNew = true;
             opts.query = ""+ATS.mBuilder.AppId ;
-            mSocket = IO.socket(""+ ATS.mBuilder.SocketEndPoint, opts);
+
+
+            mSocket = IO.socket(""+ ATS.mBuilder.   SocketEndPoint, opts);
             mSocket.on(CONNECT, onConnect);
             mSocket.on(DISCONNECT, onDisconnected);
             mSocket.connect();
 
             mHandler = new Handler();
+
+
 
         } catch (Exception e){
             LOGS.e(TAG , ""+e.getMessage());
@@ -95,6 +99,7 @@ public class SocketManager {
             }
             catch (Exception e){ LOGS.e(TAG , ""+e.getMessage()); }
             EventBus.getDefault().post(SOCKET_CONNECTED);
+
         }
     };
 
@@ -549,7 +554,7 @@ public class SocketManager {
     }
 
 
-    public  boolean isSocketConnected(){
+    public  static boolean isSocketConnected(){
         if(mSocket.connected()){
             return true ;
         }else{
