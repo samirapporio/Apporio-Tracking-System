@@ -16,6 +16,7 @@ import com.apporioinfolabs.ats_sdk.managers.DatabaseManager;
 import com.apporioinfolabs.ats_sdk.managers.NotificationManager;
 import com.apporioinfolabs.ats_sdk.managers.SharedPrefrencesManager;
 import com.apporioinfolabs.ats_sdk.managers.SocketManager;
+import com.apporioinfolabs.ats_sdk.models.ModelLocation;
 import com.apporioinfolabs.ats_sdk.utils.ATSConstants;
 import com.apporioinfolabs.ats_sdk.utils.AppUtils;
 import com.apporioinfolabs.ats_sdk.utils.LOGS;
@@ -116,6 +117,11 @@ public abstract class AtsLocationServiceClass  extends Service {
                     " State: "+(ATS.app_foreground?"Foreground":"Background")+
                     " Tag: "+sharedPrefrencesManager.fetchData(ATSConstants.KEYS.TAG),false);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(Location location){
+        onReceiveLocation(location);
     }
 
 

@@ -8,6 +8,7 @@ import android.location.Location;
 import androidx.annotation.NonNull;
 import com.apporioinfolabs.ats_sdk.ATS;
 import com.apporioinfolabs.ats_sdk.di.ApplicationContext;
+import com.apporioinfolabs.ats_sdk.models.ModelLocation;
 import com.apporioinfolabs.ats_sdk.utils.ATSConstants;
 import com.apporioinfolabs.ats_sdk.utils.AppUtils;
 import com.apporioinfolabs.ats_sdk.utils.LOGS;
@@ -22,6 +23,8 @@ import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
@@ -44,6 +47,7 @@ public class AtsLocationManager {
     @Inject NotificationManager notificationManager ;
     @Inject SocketManager socketManager ;
     @Inject DatabaseManager databaseManager ;
+    @Inject ModelLocation modelLocation ;
 
 
 
@@ -64,6 +68,8 @@ public class AtsLocationManager {
                         try{
                             String locationString = ""+ location.getLatitude()+"_"+location.getLongitude()+"_"+location.getAccuracy()+"_"+location.getBearing()+"_"+location.getTime() ;
                             sharedPrefrencesManager.saveData(ATSConstants.KEYS.LOCATION, ""+ locationString);
+
+                            EventBus.getDefault().post(modelLocation.setLocation(location.getLatitude(),location.getLongitude(),location.getAccuracy(),location.getBearing()));
 
                             notificationManager.updateRunningNotificationView(
                                     AppUtils.getLocationString(locationString)+
