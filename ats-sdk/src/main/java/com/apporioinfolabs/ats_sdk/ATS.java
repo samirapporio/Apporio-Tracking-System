@@ -110,7 +110,7 @@ public class ATS {
 
         // Socket Settings
 //        public String SocketEndPoint = "http://13.233.98.63:3005";
-        public String SocketEndPoint = "http://atssdk.herokuapp.com";
+        public String SocketEndPoint = "http://68.183.85.170:3027";
         public int LocationLogStashSyncRate = 30 ; // this will sync 30 logs from the logs stash every time
 
 //        TaxiSegmentActionHandler mTaxiSegmentActionHandler;
