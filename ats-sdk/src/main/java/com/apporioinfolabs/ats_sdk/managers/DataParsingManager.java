@@ -11,8 +11,8 @@ public class DataParsingManager {
 
     public static String getMessageType ( String message){
         try{
-            ModelMessageType modelMessageType = ATS.gson.fromJson(""+message,ModelMessageType.class);
-            return  modelMessageType.getNameValuePairs().getType();
+            ModelMessageType modelMessageType = ATS.gson.fromJson(message,ModelMessageType.class);
+            return  modelMessageType.getResponse().getType();
         }catch (Exception e){
             LOGS.e(TAG , ""+e.getMessage());
             return "NA";

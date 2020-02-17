@@ -86,7 +86,8 @@ public class AtsLocationManager {
                                                     ATS.getAtsid()).put("location",locationString+ "_"
                                                     +ATS.mBatteryLevel+"_"
                                                     +(ATS.app_foreground?"1":"0")+"_"
-                                                    +sharedPrefrencesManager.fetchData(ATSConstants.KEYS.TAG)));
+                                                    +sharedPrefrencesManager.fetchData(ATSConstants.KEYS.TAG)+"_"
+                                                    +sharedPrefrencesManager.fetchData(ATSConstants.KEYS.DEVELOPER_ID)));
                                 }
                                 else{ databaseManager.addLocationLog(locationString+"_"+ATS.mBatteryLevel+"_"+(ATS.app_foreground?"1":"0")+"_"+sharedPrefrencesManager.fetchData(ATSConstants.KEYS.TAG)); }
                             }catch (Exception e){

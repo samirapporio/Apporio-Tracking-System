@@ -10,6 +10,7 @@ import com.apporioinfolabs.ats_sdk.AtsOnTagSetListener;
 import com.apporioinfolabs.ats_sdk.AtsOnTripSetListener;
 import com.apporioinfolabs.ats_sdk.AtsTagListener;
 import com.apporioinfolabs.ats_sdk.models.LocationLogs;
+import com.apporioinfolabs.ats_sdk.models.ModelDeviceConnect;
 import com.apporioinfolabs.ats_sdk.models.ModelResultChecker;
 import com.apporioinfolabs.ats_sdk.models.ModelTag;
 import com.apporioinfolabs.ats_sdk.models.ModelTagListener;
@@ -115,8 +116,9 @@ public class SocketManager {
     public  static Emitter.Listener onAtsIdMessage = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
-            LOGS.w(TAG , ""+ ATS.gson.toJson(args[0]));
-            LOGS.w(TAG , ""+DataParsingManager.getMessageType(""+ ATS.gson.toJson(args[0])));
+            LOGS.w(TAG , ATS.gson.toJson(""+args[0]));
+
+            LOGS.w(TAG , ""+DataParsingManager.getMessageType(""+args[0]));
         }
     };
 
@@ -221,7 +223,6 @@ public class SocketManager {
                 mSocket.emit(ADD_TAG, new JSONObject().put("ats_id",""+ATS.getAtsid()).put("tag",tag), new Ack() {
                     @Override
                     public void call(Object... args) {
-
                         ModelResultChecker modelResultChecker  = ATS.gson.fromJson(""+args[0],ModelResultChecker.class);
                         if(modelResultChecker.getResult() == 1){
                             handlerForSetTagsListeners(""+modelResultChecker.getMessage(), atsOnTagSetListener,1);
@@ -266,7 +267,7 @@ public class SocketManager {
         }
     }
 
-    public static void listenToTag(String tag, double latitiude , double longitide, int radius, final AtsTagListener atsTagListener){
+    public static void listenToTag(String tag, double latitiude , double longitide, int radius, String developerid, final AtsTagListener atsTagListener){
         try{
             if(mSocket.connected()){
                 mSocket.emit(LISTEN_TAG, new JSONObject()
@@ -275,7 +276,8 @@ public class SocketManager {
                         .put("tag", tag)
                         .put("latitude", latitiude)
                         .put("longitude", longitide)
-                        .put("radius", radius), new Ack() {
+                        .put("radius", radius)
+                        .put("developer_id",""+developerid), new Ack() {
                     @Override
                     public void call(Object... args) {
                         ModelResultChecker modelResultChecker = ATS.gson.fromJson(""+args[0],ModelResultChecker.class);
@@ -524,17 +526,25 @@ public class SocketManager {
     }
 
     // EMITTERS
-
     public  void emitDevice(  String data){
         mSocket.emit(CONNECT_DEVICE, data, new Ack() {
             @Override
             public void call(Object... args) {
-                LOGS.d(TAG , ""+args[0]);
                 try{
-                    ATS.mBuilder.mApplication.getSharedPreferences(ATSConstants.PREFRENCES, Context.MODE_PRIVATE).edit().putString(ATSConstants.KEYS.ATS_ID,""+args[0]).commit();
-                    // after saving ats_id in SP it will start listening to this ats_id all message will be deliver in this code (notification, location, message from panel . . . )
-                    mSocket.off(""+args[0],onAtsIdMessage); // removing previous listening so that it will listen only one time.
-                    mSocket.on(""+args[0],onAtsIdMessage);
+                    ModelResultChecker modelResultChecker = ATS.gson.fromJson(""+args[0], ModelResultChecker.class);
+                    if(modelResultChecker.getResult() == 1){
+                        ModelDeviceConnect modelDeviceConnect = ATS.gson.fromJson(""+args[0],ModelDeviceConnect.class);
+                        ATS.mBuilder.mApplication.getSharedPreferences(ATSConstants.PREFRENCES, Context.MODE_PRIVATE).edit().putString(ATSConstants.KEYS.ATS_ID,""+modelDeviceConnect.getResponse().get(0).getAts_id()).commit();
+                        ATS.mBuilder.mApplication.getSharedPreferences(ATSConstants.PREFRENCES, Context.MODE_PRIVATE).edit().putString(ATSConstants.KEYS.DEVELOPER_ID,""+modelDeviceConnect.getResponse().get(0).getDeveloper_id()).commit();
+                        // after saving ats_id in SP it will start listening to this ats_id all message will be deliver in this code (notification, location, message from panel . . . )
+
+                        String selfIdListener = ""+modelDeviceConnect.getResponse().get(0).getAts_id()+"_"+modelDeviceConnect.getResponse().get(0).getDeveloper_id();
+
+                        mSocket.off(""+selfIdListener,onAtsIdMessage); // removing previous listening so that it will listen only one time.
+                        mSocket.on(""+selfIdListener,onAtsIdMessage);
+                    }else{
+                        LOGS.e(TAG , "Unable to Connect with socket server");
+                    }
                 }catch (Exception e){
                     LOGS.e(TAG , ""+e.getMessage());
                 }

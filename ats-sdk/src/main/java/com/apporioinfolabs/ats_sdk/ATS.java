@@ -124,7 +124,7 @@ public class ATS {
         }
 
         public Builder setAppId(String appId){
-            this.AppId = appId ;
+            this.AppId = "auth_token="+appId ;
             return this;
         }
 
@@ -248,8 +248,8 @@ public class ATS {
     }
 
 
-    public static void listenTagAccordingToRadius(String tag, double latitude, double longitude, int radiusInMeter, AtsTagListener atsTagListener){
-        SocketManager.listenToTag(tag, latitude, longitude, radiusInMeter, atsTagListener);
+    public static void listenTagAccordingToRadius(String tag, double latitude, double longitude, int radiusInMeter, String developerId, AtsTagListener atsTagListener){
+        SocketManager.listenToTag(tag, latitude, longitude, radiusInMeter, developerId, atsTagListener);
     }
 
 
