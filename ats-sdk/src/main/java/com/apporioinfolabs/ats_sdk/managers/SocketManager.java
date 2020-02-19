@@ -2,6 +2,7 @@ package com.apporioinfolabs.ats_sdk.managers;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 
 import com.apporioinfolabs.ats_sdk.ATS;
 import com.apporioinfolabs.ats_sdk.AtsOnAddMessageListener;
@@ -220,7 +221,8 @@ public class SocketManager {
     public static void addTag(String tag, final AtsOnTagSetListener atsOnTagSetListener){
         try {
             if(mSocket.connected()){
-                mSocket.emit(ADD_TAG, new JSONObject().put("ats_id",""+ATS.getAtsid()).put("tag",tag), new Ack() {
+                String developer_id = ATS.mBuilder.mApplication.getSharedPreferences(ATSConstants.PREFRENCES, Context.MODE_PRIVATE).getString(ATSConstants.KEYS.DEVELOPER_ID,"NA");
+                mSocket.emit(ADD_TAG, new JSONObject().put("ats_id",""+ATS.getAtsid()).put("tag",tag).put("developer_id",developer_id), new Ack() {
                     @Override
                     public void call(Object... args) {
                         ModelResultChecker modelResultChecker  = ATS.gson.fromJson(""+args[0],ModelResultChecker.class);
@@ -246,7 +248,8 @@ public class SocketManager {
     public static void removeTag (final AtsOnTagSetListener atsOnTagSetListener) {
         try{
             if(mSocket.connected()){
-                mSocket.emit(REMOVE_TAG, new JSONObject().put("ats_id",""+ATS.getAtsid()), new Ack() {
+                String developer_id = ATS.mBuilder.mApplication.getSharedPreferences(ATSConstants.PREFRENCES, Context.MODE_PRIVATE).getString(ATSConstants.KEYS.DEVELOPER_ID,"NA");
+                mSocket.emit(REMOVE_TAG, new JSONObject().put("ats_id",""+ATS.getAtsid()).put("developer_id",developer_id), new Ack() {
                     @Override
                     public void call(Object... args) {
                         ModelResultChecker modelResultChecker = ATS.gson.fromJson(""+args[0],ModelResultChecker.class);
@@ -533,6 +536,7 @@ public class SocketManager {
                 try{
                     ModelResultChecker modelResultChecker = ATS.gson.fromJson(""+args[0], ModelResultChecker.class);
                     if(modelResultChecker.getResult() == 1){
+
                         ModelDeviceConnect modelDeviceConnect = ATS.gson.fromJson(""+args[0],ModelDeviceConnect.class);
                         ATS.mBuilder.mApplication.getSharedPreferences(ATSConstants.PREFRENCES, Context.MODE_PRIVATE).edit().putString(ATSConstants.KEYS.ATS_ID,""+modelDeviceConnect.getResponse().get(0).getAts_id()).commit();
                         ATS.mBuilder.mApplication.getSharedPreferences(ATSConstants.PREFRENCES, Context.MODE_PRIVATE).edit().putString(ATSConstants.KEYS.DEVELOPER_ID,""+modelDeviceConnect.getResponse().get(0).getDeveloper_id()).commit();
