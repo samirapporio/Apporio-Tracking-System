@@ -1,5 +1,6 @@
 package com.apporioinfolabs.ats_sdk.di;
 
+import com.apporioinfolabs.ats_sdk.ATS;
 import com.apporioinfolabs.ats_sdk.AtsLocationServiceClass;
 
 import javax.inject.Singleton;
@@ -11,5 +12,6 @@ import dagger.Component;
 public interface MainComponent {
 
     void inject(AtsLocationServiceClass atsLocationServiceClass);
+    void inject(ATS ats);
 
 }

@@ -72,18 +72,12 @@ public class SocketManager {
         try{
             IO.Options opts = new IO.Options();
             opts.forceNew = true;
-            opts.query = ""+ATS.mBuilder.AppId ;
-
-
+            opts.query = ATS.mBuilder.AppId+"_@_@_@mobile" ;
             mSocket = IO.socket(""+ ATS.mBuilder.   SocketEndPoint, opts);
             mSocket.on(CONNECT, onConnect);
             mSocket.on(DISCONNECT, onDisconnected);
             mSocket.connect();
-
             mHandler = new Handler();
-
-
-
         } catch (Exception e){
             LOGS.e(TAG , ""+e.getMessage());
         }
@@ -96,6 +90,7 @@ public class SocketManager {
         @Override
         public void call(final Object... args) {
             try{
+                LOGS.d(TAG, "SOCKET CONNECTED");
                 emitDevice(ApplicationInfo.getInfo());
                 startLocationStashEmission();
             }
@@ -139,7 +134,7 @@ public class SocketManager {
                             mSocket.on(targetAtsIdToListen, new Emitter.Listener() {
                                 @Override
                                 public void call(Object... args) {
-                                    handerForAddMessageListener("Incoming data after registration some key :  "+args[0], atsOnAddMessageListener,3);
+                                    handerForAddMessageListener(""+args[0], atsOnAddMessageListener,3);
                                 }
                             });
                         }else{
@@ -547,7 +542,8 @@ public class SocketManager {
                         mSocket.off(""+selfIdListener,onAtsIdMessage); // removing previous listening so that it will listen only one time.
                         mSocket.on(""+selfIdListener,onAtsIdMessage);
                     }else{
-                        LOGS.e(TAG , "Unable to Connect with socket server");
+                        LOGS.e(TAG , ""+modelResultChecker.getMessage());
+                        mSocket.disconnect();
                     }
                 }catch (Exception e){
                     LOGS.e(TAG , ""+e.getMessage());

@@ -89,7 +89,6 @@ public abstract class AtsLocationServiceClass  extends Service {
     }
 
 
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(String socketConnectivity){
         if(socketConnectivity.equals(""+ SocketManager.SOCKET_CONNECTED)){
@@ -123,7 +122,6 @@ public abstract class AtsLocationServiceClass  extends Service {
     public void onMessageEvent(Location location){
         onReceiveLocation(location);
     }
-
 
 
     public abstract void onReceiveLocation(Location location);

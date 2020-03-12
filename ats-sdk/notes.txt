@@ -26,3 +26,12 @@ Points to be write in document
 
 // Pending test use case
 // (1) if there are lots of location stack exist in library and certainly if developers ends the trip then there could be condition generated polyline will be incorrect.
+
+
+// documentation improvement
+ (1) create full application class so that developer will not add initial code in any activity.
+
+
+// Backend improvement
+ (1) remove tag from the listeners table when it got disconnected from socket server and add it again when it get connected
+ (2) Tags of two different application can be same (ie created by to different developer) add package name as well ----> (RESOLVED VIA ADDING DEVELOPER ID )

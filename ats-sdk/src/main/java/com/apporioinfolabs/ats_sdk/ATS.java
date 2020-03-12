@@ -8,16 +8,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.BatteryManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.apporioinfolabs.ats_sdk.managers.SocketManager;
 import com.apporioinfolabs.ats_sdk.utils.ATSConstants;
+import com.apporioinfolabs.ats_sdk.utils.LOGS;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import javax.inject.Inject;
 
 public class ATS {
 
@@ -204,7 +210,20 @@ public class ATS {
     }
 
 
-
+    public static Location getLastLocation(){
+        try{
+            String[] locationStrinfArr = ATS.mBuilder.mApplication.getSharedPreferences(ATSConstants.PREFRENCES, Context.MODE_PRIVATE).getString(ATSConstants.KEYS.LOCATION, "NA").split("_");
+            Location location = new Location("GPS");
+            location.setLatitude(Double.parseDouble(""+locationStrinfArr[0]));
+            location.setLongitude(Double.parseDouble(""+locationStrinfArr[1]));
+            location.setAccuracy(Float.parseFloat(""+locationStrinfArr[2]));
+            location.setBearing(Float.parseFloat(""+locationStrinfArr[3]));
+            return location ;
+        }catch (Exception e){
+            LOGS.e(TAG, ""+e.getMessage());
+            return null;
+        }
+    }
 
     public static void enableLogs(boolean value){
         if(mBuilder != null){
