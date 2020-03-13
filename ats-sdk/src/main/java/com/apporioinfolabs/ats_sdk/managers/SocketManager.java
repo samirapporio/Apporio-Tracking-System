@@ -1,6 +1,7 @@
 package com.apporioinfolabs.ats_sdk.managers;
 
 import android.content.Context;
+import android.location.Location;
 import android.os.Handler;
 import android.util.Log;
 
@@ -12,6 +13,7 @@ import com.apporioinfolabs.ats_sdk.AtsOnTripSetListener;
 import com.apporioinfolabs.ats_sdk.AtsTagListener;
 import com.apporioinfolabs.ats_sdk.models.LocationLogs;
 import com.apporioinfolabs.ats_sdk.models.ModelDeviceConnect;
+import com.apporioinfolabs.ats_sdk.models.ModelEmitterbyTagData;
 import com.apporioinfolabs.ats_sdk.models.ModelResultChecker;
 import com.apporioinfolabs.ats_sdk.models.ModelTag;
 import com.apporioinfolabs.ats_sdk.models.ModelTagListener;
@@ -64,6 +66,7 @@ public class SocketManager {
 
     @Inject DatabaseManager databaseManager ;
     private static Handler mHandler;
+
 
 
 
@@ -293,7 +296,15 @@ public class SocketManager {
                             mSocket.on(modelTagListener.getResponse().get(0).getUls(), new Emitter.Listener() {
                                 @Override
                                 public void call(Object... args) {
-                                    LOGS.i(TAG , ""+args[0]);
+                                    ModelEmitterbyTagData modelEmitterbyTagData = ATS.gson.fromJson(""+args[0],ModelEmitterbyTagData.class);
+                                    if(modelEmitterbyTagData.getType().equals("ADD")){
+                                        handlerForAtsTagListener(""+modelEmitterbyTagData.getData(), atsTagListener,3);
+                                    }if(modelEmitterbyTagData.getType().equals("CHANGE")){
+                                        handlerForAtsTagListener(""+modelEmitterbyTagData.getData(), atsTagListener,4);
+                                    }if(modelEmitterbyTagData.getType().equals("REMOVE")){
+                                        handlerForAtsTagListener(""+modelEmitterbyTagData.getData(), atsTagListener,5);
+                                    }
+
                                 }
                             });
 
@@ -477,10 +488,17 @@ public class SocketManager {
             });
 
         }if(type == 3){  // on add
+
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    atsTagListener.onAdd(""+message);
+                    final String[] splitter = message.split("_");
+                    Location location = ATS.getLocationobj();
+                    location.setLatitude(Double.parseDouble(""+splitter[0]));
+                    location.setLongitude(Double.parseDouble(""+splitter[1]));
+                    location.setAccuracy(Float.parseFloat(""+splitter[2]));
+                    location.setBearing(Float.parseFloat(""+splitter[3]));
+                    atsTagListener.onAdd(location);
                 }
             });
 
@@ -488,7 +506,13 @@ public class SocketManager {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    atsTagListener.onChange(""+message);
+                    final String[] splitter = message.split("_");
+                    Location location = ATS.getLocationobj();
+                    location.setLatitude(Double.parseDouble(""+splitter[0]));
+                    location.setLongitude(Double.parseDouble(""+splitter[1]));
+                    location.setAccuracy(Float.parseFloat(""+splitter[2]));
+                    location.setBearing(Float.parseFloat(""+splitter[3]));
+                    atsTagListener.onChange(location);
                 }
             });
 
@@ -496,7 +520,13 @@ public class SocketManager {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    atsTagListener.onRemove(""+message);
+                    final String[] splitter = message.split("_");
+                    Location location = ATS.getLocationobj();
+                    location.setLatitude(Double.parseDouble(""+splitter[0]));
+                    location.setLongitude(Double.parseDouble(""+splitter[1]));
+                    location.setAccuracy(Float.parseFloat(""+splitter[2]));
+                    location.setBearing(Float.parseFloat(""+splitter[3]));
+                    atsTagListener.onRemove(location);
                 }
             });
 

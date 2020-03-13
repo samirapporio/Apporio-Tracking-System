@@ -31,6 +31,7 @@ public class ATS {
     public static ATS.Builder mBuilder = null ;
     private static final String TAG = "ATS";
     public static Gson gson ;
+    public static Location location ;
     public static int  mBatteryLevel = 0;
     private static int activityReferences = 0;
     private static boolean isActivityChangingConfigurations = false;
@@ -53,6 +54,7 @@ public class ATS {
     private static void init(ATS.Builder inBuilder) {
         mBuilder = inBuilder ;
         gson = new GsonBuilder().create();
+        location = new Location("");
         inBuilder.mApplication.registerReceiver(mBatInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         inBuilder.mApplication.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override
@@ -228,6 +230,15 @@ public class ATS {
     public static void enableLogs(boolean value){
         if(mBuilder != null){
             mBuilder.LogEnable = value;
+        }
+    }
+
+    public static Location getLocationobj(){
+        if(location == null){
+            location = new Location("");
+            return location ;
+        }else{
+            return location ;
         }
     }
 
