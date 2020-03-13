@@ -130,6 +130,7 @@ public abstract class AtsLocationServiceClass  extends Service {
     @Override
     public void onDestroy() {
         EventBus.getDefault().unregister(this);
+        atsLocationManager.stopLocationUpdates();
         super.onDestroy();
     }
 
