@@ -4,11 +4,13 @@ public class ModelEmitterbyTagData {
 
     /**
      * type : CHANGE
-     * data : 28.4123607_77.0440434_26.633_239.1835_1584084003151_18_1_AAAA_5e4e21de577d8b1accd4f76f
+     * data : 28.4123757_77.0440817_17.54_0.0_1584094056507_6_1_AAAA_5e4e21de577d8b1accd4f76f
+     * ats_id : f3254a3671d22b88_com.apporio.secondapp
      */
 
     private String type;
     private String data;
+    private String ats_id;
 
     public String getType() {
         return type;
@@ -24,5 +26,13 @@ public class ModelEmitterbyTagData {
 
     public void setData(String data) {
         this.data = data;
+    }
+
+    public String getAts_id() {
+        return ats_id;
+    }
+
+    public void setAts_id(String ats_id) {
+        this.ats_id = ats_id;
     }
 }

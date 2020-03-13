@@ -284,7 +284,7 @@ public class SocketManager {
                         ModelResultChecker modelResultChecker = ATS.gson.fromJson(""+args[0],ModelResultChecker.class);
                         if(modelResultChecker.getResult() == 1){
                             ModelTagListener modelTagListener = ATS.gson.fromJson(""+args[0],ModelTagListener.class);
-                            handlerForAtsTagListener(""+modelResultChecker.getMessage(), atsTagListener,1);
+                            handlerForAtsTagListener(""+modelResultChecker.getMessage(),"", atsTagListener,1);
 
                             String tagListening = ATS.mBuilder.mApplication.getSharedPreferences(ATSConstants.PREFRENCES, Context.MODE_PRIVATE).getString(ATSConstants.KEYS.LISTEN_TAG,"NA");
                             if(!tagListening.equals("NA")){  mSocket.off(""+modelTagListener.getResponse().get(0).getUls()); }
@@ -296,28 +296,29 @@ public class SocketManager {
                             mSocket.on(modelTagListener.getResponse().get(0).getUls(), new Emitter.Listener() {
                                 @Override
                                 public void call(Object... args) {
+                                    Log.e(TAG , "&&  &&  "+args[0]);
                                     ModelEmitterbyTagData modelEmitterbyTagData = ATS.gson.fromJson(""+args[0],ModelEmitterbyTagData.class);
                                     if(modelEmitterbyTagData.getType().equals("ADD")){
-                                        handlerForAtsTagListener(""+modelEmitterbyTagData.getData(), atsTagListener,3);
+                                        handlerForAtsTagListener(""+modelEmitterbyTagData.getData(),modelEmitterbyTagData.getAts_id(), atsTagListener,3);
                                     }if(modelEmitterbyTagData.getType().equals("CHANGE")){
-                                        handlerForAtsTagListener(""+modelEmitterbyTagData.getData(), atsTagListener,4);
+                                        handlerForAtsTagListener(""+modelEmitterbyTagData.getData(),modelEmitterbyTagData.getAts_id(), atsTagListener,4);
                                     }if(modelEmitterbyTagData.getType().equals("REMOVE")){
-                                        handlerForAtsTagListener(""+modelEmitterbyTagData.getData(), atsTagListener,5);
+                                        handlerForAtsTagListener(""+modelEmitterbyTagData.getData(),modelEmitterbyTagData.getAts_id(), atsTagListener,5);
                                     }
 
                                 }
                             });
 
                         }else if(modelResultChecker.getResult() == 0){
-                            handlerForAtsTagListener(""+modelResultChecker.getMessage(), atsTagListener,2);
+                            handlerForAtsTagListener(""+modelResultChecker.getMessage(), "", atsTagListener,2);
                         }
                     }
                 });
             }else{
-                handlerForAtsTagListener("You are not connected with the server.", atsTagListener, 2);
+                handlerForAtsTagListener("You are not connected with the server.", "", atsTagListener, 2);
             }
         }catch (Exception e){
-            handlerForAtsTagListener("Exception: "+e.getMessage(), atsTagListener, 2);
+            handlerForAtsTagListener("Exception: "+e.getMessage(), "", atsTagListener, 2);
         }
     }
 
@@ -471,7 +472,7 @@ public class SocketManager {
     }
 
 
-    private static void handlerForAtsTagListener(final String message , final AtsTagListener atsTagListener , int type){
+    private static void handlerForAtsTagListener(final String message, final String driverAtsid , final AtsTagListener atsTagListener , int type){
         if(type == 1){  // on success
             mHandler.post(new Runnable() {
                 @Override
@@ -498,7 +499,7 @@ public class SocketManager {
                     location.setLongitude(Double.parseDouble(""+splitter[1]));
                     location.setAccuracy(Float.parseFloat(""+splitter[2]));
                     location.setBearing(Float.parseFloat(""+splitter[3]));
-                    atsTagListener.onAdd(location);
+                    atsTagListener.onAdd(location, ""+driverAtsid);
                 }
             });
 
@@ -512,7 +513,7 @@ public class SocketManager {
                     location.setLongitude(Double.parseDouble(""+splitter[1]));
                     location.setAccuracy(Float.parseFloat(""+splitter[2]));
                     location.setBearing(Float.parseFloat(""+splitter[3]));
-                    atsTagListener.onChange(location);
+                    atsTagListener.onChange(location, ""+driverAtsid);
                 }
             });
 
@@ -526,7 +527,7 @@ public class SocketManager {
                     location.setLongitude(Double.parseDouble(""+splitter[1]));
                     location.setAccuracy(Float.parseFloat(""+splitter[2]));
                     location.setBearing(Float.parseFloat(""+splitter[3]));
-                    atsTagListener.onRemove(location);
+                    atsTagListener.onRemove(location, ""+driverAtsid);
                 }
             });
 
