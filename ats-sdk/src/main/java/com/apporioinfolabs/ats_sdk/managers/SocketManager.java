@@ -119,7 +119,7 @@ public class SocketManager {
             LOGS.w(TAG , ATS.gson.toJson(""+args[0]));
             LOGS.w(TAG , ""+DataParsingManager.getMessageType(""+args[0]));
             if(ATS.mBuilder.atsNotification != null){
-                ATS.mBuilder.atsNotification.onReceived("TEST", ""+DataParsingManager.getMessageType(""+args[0]));
+                ATS.mBuilder.atsNotification.onReceived(""+DataParsingManager.getMessageType(""+args[0]), ""+DataParsingManager.getMessage(""+args[0]));
             }
         }
     };
