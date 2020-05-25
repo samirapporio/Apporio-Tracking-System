@@ -115,6 +115,7 @@ public class ATS {
         public String NotificationContent = "Notification Content text Goes here";
         public int SocketConnectedColor = Color.argb(4,0, 153, 76);  // material green color
         public int SocketDisConnectedColor = Color.argb(4,204, 0, 0);  // Bright Red color
+        public AtsNotification atsNotification = null ;
 
         // Socket Settings
 //        public String SocketEndPoint = "http://13.233.98.63:3005";
@@ -194,6 +195,11 @@ public class ATS {
         public Builder BuildersetLogStashSyncRate(int SyncRate){
             this.LocationLogStashSyncRate = SyncRate ;
             return this ;
+        }
+
+        public Builder setAtsNotification(AtsNotification atsNotification){
+         this.atsNotification = atsNotification ;
+         return this ;
         }
 
 

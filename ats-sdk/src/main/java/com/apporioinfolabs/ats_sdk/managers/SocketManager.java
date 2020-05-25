@@ -115,9 +115,12 @@ public class SocketManager {
     public  static Emitter.Listener onAtsIdMessage = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
-            LOGS.w(TAG , ATS.gson.toJson(""+args[0]));
 
+            LOGS.w(TAG , ATS.gson.toJson(""+args[0]));
             LOGS.w(TAG , ""+DataParsingManager.getMessageType(""+args[0]));
+            if(ATS.mBuilder.atsNotification != null){
+                ATS.mBuilder.atsNotification.onReceived("TEST", ""+DataParsingManager.getMessageType(""+args[0]));
+            }
         }
     };
 

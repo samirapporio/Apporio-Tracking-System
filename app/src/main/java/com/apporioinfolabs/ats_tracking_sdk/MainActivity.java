@@ -1,6 +1,7 @@
 package com.apporioinfolabs.ats_tracking_sdk;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -171,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void listentag(View view) {
         try{
-            ATS.listenTagAccordingToRadius("AAAA", 28.411827, 77.042085, 5000, new AtsTagListener() {
+            ATS.listenTagAccordingToRadius("AAAA", 28.411827, 77.042085, 5000,"", new AtsTagListener() {
                 @Override
                 public void onSuccess(String message) {
                     Toast.makeText(MainActivity.this, ""+message, Toast.LENGTH_SHORT).show();
@@ -183,19 +184,20 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onAdd(String message) {
-                    Toast.makeText(MainActivity.this, ""+message, Toast.LENGTH_SHORT).show();
+                public void onAdd(Location location, String atsId) {
+                    Toast.makeText(MainActivity.this, ""+atsId, Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
-                public void onChange(String message) {
-                    Toast.makeText(MainActivity.this, ""+message, Toast.LENGTH_SHORT).show();
+                public void onChange(Location location, String atsId) {
+                    Toast.makeText(MainActivity.this, ""+atsId, Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
-                public void onRemove(String message) {
-                    Toast.makeText(MainActivity.this, ""+message, Toast.LENGTH_SHORT).show();
+                public void onRemove(Location location, String atsId) {
+                    Toast.makeText(MainActivity.this, ""+atsId, Toast.LENGTH_SHORT).show();
                 }
+
             });
         }catch (Exception e){
             Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
