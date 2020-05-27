@@ -23,6 +23,8 @@ import com.apporioinfolabs.ats_sdk.utils.LOGS;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.json.JSONObject;
+
 import javax.inject.Inject;
 
 public class ATS {
@@ -305,7 +307,9 @@ public class ATS {
     }
 
 
-
+    public static void postNotification(JSONObject jsonObject, OnPostListener onPostListener){
+        SocketManager.emitMessage(jsonObject, onPostListener);
+    }
 
 
 }

@@ -11,6 +11,7 @@ import com.apporioinfolabs.ats_sdk.AtsOnRemoveMessageListener;
 import com.apporioinfolabs.ats_sdk.AtsOnTagSetListener;
 import com.apporioinfolabs.ats_sdk.AtsOnTripSetListener;
 import com.apporioinfolabs.ats_sdk.AtsTagListener;
+import com.apporioinfolabs.ats_sdk.OnPostListener;
 import com.apporioinfolabs.ats_sdk.models.LocationLogs;
 import com.apporioinfolabs.ats_sdk.models.ModelDeviceConnect;
 import com.apporioinfolabs.ats_sdk.models.ModelEmitterbyTagData;
@@ -63,6 +64,7 @@ public class SocketManager {
     public static String STOP_LISTEN_TAG = "STOP_LISTEN_TAG";
     public static String START_TRIP = "START_TRIP";
     public static String STOP_TRIP = "STOP_TRIP";
+    public static String MESSAGE = "MESSAGE";
 
     @Inject DatabaseManager databaseManager ;
     private static Handler mHandler;
@@ -595,6 +597,23 @@ public class SocketManager {
 //                catch (Exception e){ LOGS.e(TAG , ""+e.getMessage()); }
             }
         });
+    }
+
+    public static void emitMessage(JSONObject jsonObject, final OnPostListener onPostListener){
+        if(isSocketConnected()){
+            mSocket.emit(MESSAGE, jsonObject, new Ack() {
+                @Override
+                public void call(Object... args) {
+                try{ LOGS.i(TAG , ""+ATS.gson.toJson(args[0]));
+                onPostListener.onPost(""+ATS.gson.toJson(args[0]));
+                }
+                catch (Exception e){ LOGS.e(TAG , ""+e.getMessage());
+                onPostListener.onPost(""+e.getMessage());
+                }
+                }
+            });
+
+        }
     }
 
 
