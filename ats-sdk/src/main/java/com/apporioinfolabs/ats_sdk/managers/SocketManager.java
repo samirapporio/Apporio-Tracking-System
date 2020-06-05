@@ -278,7 +278,7 @@ public class SocketManager {
             if(mSocket.connected()){
                 mSocket.emit(LISTEN_TAG, new JSONObject()
                         .put("ats_id", ""+ATS.getAtsid())
-                        .put("uls",""+ATS.getAtsid()+""+tag) // ie a unique things on which he will listen tag like screen id
+                        .put("uls",""+ATS.getAtsid()+"||"+tag) // ie a unique things on which he will listen tag like screen id
                         .put("tag", tag)
                         .put("latitude", latitiude)
                         .put("longitude", longitide)

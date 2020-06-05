@@ -250,11 +250,9 @@ public class ATS {
         }
     }
 
-
     public static String getAtsid(){
         return ""+ATS.mBuilder.mApplication.getSharedPreferences(ATSConstants.PREFRENCES, Context.MODE_PRIVATE).getString(ATSConstants.KEYS.ATS_ID, "NA");
     }
-
 
     public static void setTag(String tag, AtsOnTagSetListener atsOnTagSetListener){
         SocketManager.addTag(tag,atsOnTagSetListener);
@@ -264,7 +262,6 @@ public class ATS {
         return ATS.mBuilder.mApplication.getSharedPreferences(ATSConstants.PREFRENCES, Context.MODE_PRIVATE).getString(ATSConstants.KEYS.TAG,"NA");
     }
 
-
     public static void removeTag(AtsOnTagSetListener atsOnTagSetListener){
         SocketManager.removeTag(atsOnTagSetListener);
     }
@@ -273,29 +270,21 @@ public class ATS {
         SocketManager.registerListenerForTargetAtsId(targetAtsIdToListen, atsOnAddMessageListener);
     }
 
-
-
     public static void stopListeningAtsId(String targetAtsIdToRemove , AtsOnRemoveMessageListener atsOnRemoveMessageListener){
         SocketManager.removeRegistrationFromServerAndStopListeningAtsId(targetAtsIdToRemove, atsOnRemoveMessageListener);
     }
-
-
 
     public static void removeAllListeners(AtsOnRemoveMessageListener atsOnRemoveMessageListener){
         SocketManager.removeAllExtraListeners(atsOnRemoveMessageListener);
     }
 
-
     public static void listenTagAccordingToRadius(String tag, double latitude, double longitude, int radiusInMeter, String developerId, AtsTagListener atsTagListener){
         SocketManager.listenToTag(tag, latitude, longitude, radiusInMeter, developerId, atsTagListener);
     }
 
-
-
     public static void stopListeningTag(AtsOnTagSetListener atsOnTagSetListener){
         SocketManager.stopListeningTag( atsOnTagSetListener);
     }
-
 
     public static void startTrip(String tripIdentifier , AtsOnTripSetListener atsOnTripSetListener){
         SocketManager.startTrip(tripIdentifier, atsOnTripSetListener);
@@ -305,7 +294,6 @@ public class ATS {
     public static void endTrip(String tripIdentifier, AtsOnTripSetListener atsOnTripSetListener){
         SocketManager.endTrip(tripIdentifier, atsOnTripSetListener);
     }
-
 
     public static void postNotification(JSONObject jsonObject, OnPostListener onPostListener){
         SocketManager.emitMessage(jsonObject, onPostListener);
