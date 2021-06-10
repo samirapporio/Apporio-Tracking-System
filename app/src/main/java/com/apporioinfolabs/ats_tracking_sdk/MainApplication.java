@@ -33,6 +33,7 @@ public class MainApplication extends Application {
 //                .setDisconnectedColor(Color.argb(0 , 255, 255, 102))
 //                .setSocketEndPoint("http://192.168.1.33:3027")
                 .setNotificationIcon(R.drawable.samll_notification_icon)
+                .setNotificationIconColor(R.color.colorAccent)
                 .init();
 
     }

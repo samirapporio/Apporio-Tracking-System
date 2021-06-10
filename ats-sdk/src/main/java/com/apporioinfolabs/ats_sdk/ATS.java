@@ -117,6 +117,7 @@ public class ATS {
         public String NotificationContent = "Notification Content text Goes here";
         public int SocketConnectedColor = Color.argb(4,0, 153, 76);  // material green color
         public int SocketDisConnectedColor = Color.argb(4,204, 0, 0);  // Bright Red color
+        public int NotificationIconColor = Color.argb(4,204, 0, 0);  // Bright Red color
         public AtsNotification atsNotification = null ;
 
         // Socket Settings
@@ -168,7 +169,10 @@ public class ATS {
             this.NotificationIcon = icon ;
             return this;
         }
-
+        public Builder setNotificationIconColor (int notificationIconColor){
+            this.NotificationIconColor = notificationIconColor ;
+            return this;
+        }
         public Builder setNotificationTittle(String collapsedText){
             this.NotificationTittle = collapsedText ;
             return  this ;
