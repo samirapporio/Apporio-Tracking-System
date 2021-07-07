@@ -4,10 +4,23 @@ import android.location.Location;
 
 import com.apporioinfolabs.ats_sdk.AtsLocationServiceClass;
 
+import org.greenrobot.eventbus.EventBus;
+
 public class MyService extends AtsLocationServiceClass {
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+    }
 
     @Override
     public void onReceiveLocation(Location location) {
 
+    }
+
+
+    @Override
+    public void onDistanceUpdate(String distance) {
+        EventBus.getDefault().post(""+distance);
     }
 }

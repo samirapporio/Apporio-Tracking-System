@@ -162,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     public void enableLog(View view) { ATS.enableLogs(true); }
 
     public void disableLog(View view) { ATS.enableLogs(false); }

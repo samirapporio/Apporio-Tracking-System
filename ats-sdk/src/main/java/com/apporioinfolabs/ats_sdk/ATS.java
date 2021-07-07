@@ -17,12 +17,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.apporioinfolabs.ats_sdk.events.EventMeter;
 import com.apporioinfolabs.ats_sdk.managers.SocketManager;
 import com.apporioinfolabs.ats_sdk.utils.ATSConstants;
 import com.apporioinfolabs.ats_sdk.utils.LOGS;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
@@ -106,7 +108,7 @@ public class ATS {
 
         public  Application mApplication;
         public String AppId = "NA";
-        public int LocationInterval = 6000 ;
+        public int LocationInterval = 3000 ;
         public boolean FetchLocationWhenVehicleIsStopped = false ;
         public boolean LogEnable = false ;
         // notification settings
@@ -115,14 +117,18 @@ public class ATS {
         public int NotificationIcon = 0;
         public String NotificationTittle = "Notification Title goes here";
         public String NotificationContent = "Notification Content text Goes here";
+        public float minAcccuracy = 15;
+        public boolean runMeter = false ;
         public int SocketConnectedColor = Color.argb(4,0, 153, 76);  // material green color
         public int SocketDisConnectedColor = Color.argb(4,204, 0, 0);  // Bright Red color
         public AtsNotification atsNotification = null ;
+        public float smallestDisplacement = 10;
 
         // Socket Settings
 //        public String SocketEndPoint = "http://13.233.98.63:3005";
         public String SocketEndPoint = "http://68.183.85.170:3027";
         public int LocationLogStashSyncRate = 30 ; // this will sync 30 logs from the logs stash every time
+
 
 //        TaxiSegmentActionHandler mTaxiSegmentActionHandler;
 //        TaxiSegmentScreensLifeCycleHandler mTaxiSegmentScreensLifeCycleHandler;
@@ -142,6 +148,11 @@ public class ATS {
         public Builder setLocationInterval(int interval){
             this.LocationInterval = interval ;
             return  this;
+        }
+
+        public Builder setSmallestDisplacement(float smallestDisplacement){
+            this.smallestDisplacement = smallestDisplacement;
+            return this ;
         }
 
         public Builder fetchLocationWhenVehicleIsStop(boolean value){
@@ -176,6 +187,16 @@ public class ATS {
 
         public Builder setNotificationContent (String expandedText){
             this.NotificationContent = expandedText ;
+            return this ;
+        }
+
+        public Builder setMinimumAccuracyForMeter(float accuracy){
+            this.minAcccuracy = accuracy ;
+            return this;
+        }
+
+        public Builder setRunMeter(boolean value){
+            this.runMeter = value ;
             return this ;
         }
 
@@ -248,6 +269,20 @@ public class ATS {
         }else{
             return location ;
         }
+    }
+
+
+    public static void startMeter(){
+        ATS.mBuilder.runMeter = true;
+        EventBus.getDefault().post(new EventMeter(true));
+    }
+    public static void stopMeter(){
+        ATS.mBuilder.runMeter = false;
+        EventBus.getDefault().post(new EventMeter(false));
+    }
+
+    public static boolean isMeterRunning(){
+        return mBuilder.runMeter;
     }
 
     public static String getAtsid(){

@@ -5,11 +5,12 @@ android {
     buildToolsVersion "29.0.0"
     defaultConfig {
         applicationId "com.apporioinfolabs.ats_tracking_sdk"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -27,4 +28,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     implementation project(path: ':ats-sdk')
+    implementation 'org.greenrobot:eventbus:3.1.1';
+
+
+    // implemented for testing
+    implementation 'androidx.multidex:multidex:2.0.1'
 }

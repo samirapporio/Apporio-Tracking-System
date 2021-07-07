@@ -66,32 +66,34 @@ public class AtsLocationManager {
                 }else{
                     for (Location location : locationResult.getLocations()) {
                         try{
-                            String locationString = ""+ location.getLatitude()+"_"+location.getLongitude()+"_"+location.getAccuracy()+"_"+location.getBearing()+"_"+location.getTime() ;
-                            sharedPrefrencesManager.saveData(ATSConstants.KEYS.LOCATION, ""+ locationString);
+                            if(location.getAccuracy() <= ATS.mBuilder.minAcccuracy){
+                                String locationString = ""+ location.getLatitude()+"_"+location.getLongitude()+"_"+location.getAccuracy()+"_"+location.getBearing()+"_"+location.getTime() ;
+                                sharedPrefrencesManager.saveData(ATSConstants.KEYS.LOCATION, ""+ locationString);
 
-                            EventBus.getDefault().post(modelLocation.setLocation(location.getLatitude(),location.getLongitude(),location.getAccuracy(),location.getBearing()));
+                                EventBus.getDefault().post(modelLocation.setLocation(location.getLatitude(),location.getLongitude(),location.getAccuracy(),location.getBearing()));
 
-                            notificationManager.updateRunningNotificationView(
-                                    AppUtils.getLocationString(locationString)+
-                                            " SQL Location stash:"+databaseManager.getAllLogsFromTable().size()+
-                                            " Battery: "+ATS.mBatteryLevel+
-                                            " State: "+(ATS.app_foreground?"Foreground":"Background")+
-                                            " TAG: "+sharedPrefrencesManager.fetchData(ATSConstants.KEYS.TAG)
-                                    , false );
+                                notificationManager.updateRunningNotificationView(
+                                        AppUtils.getLocationString(locationString)+
+                                                " SQL Location stash:"+databaseManager.getAllLogsFromTable().size()+
+                                                " Battery: "+ATS.mBatteryLevel+
+                                                " State: "+(ATS.app_foreground?"Foreground":"Background")+
+                                                " TAG: "+sharedPrefrencesManager.fetchData(ATSConstants.KEYS.TAG)
+                                        , false );
 
-                            try{
-                                if(socketManager.isSocketConnected()){
-                                    socketManager.emitLocation(
-                                            new JSONObject().put("ats_id",
-                                                    ATS.getAtsid()).put("location",locationString+ "_"
-                                                    +ATS.mBatteryLevel+"_"
-                                                    +(ATS.app_foreground?"1":"0")+"_"
-                                                    +sharedPrefrencesManager.fetchData(ATSConstants.KEYS.TAG)+"_"
-                                                    +sharedPrefrencesManager.fetchData(ATSConstants.KEYS.DEVELOPER_ID)));
+                                try{
+                                    if(socketManager.isSocketConnected()){
+                                        socketManager.emitLocation(
+                                                new JSONObject().put("ats_id",
+                                                        ATS.getAtsid()).put("location",locationString+ "_"
+                                                        +ATS.mBatteryLevel+"_"
+                                                        +(ATS.app_foreground?"1":"0")+"_"
+                                                        +sharedPrefrencesManager.fetchData(ATSConstants.KEYS.TAG)+"_"
+                                                        +sharedPrefrencesManager.fetchData(ATSConstants.KEYS.DEVELOPER_ID)));
+                                    }
+                                    else{ databaseManager.addLocationLog(locationString+"_"+ATS.mBatteryLevel+"_"+(ATS.app_foreground?"1":"0")+"_"+sharedPrefrencesManager.fetchData(ATSConstants.KEYS.TAG)); }
+                                }catch (Exception e){
+                                    LOGS.e(TAG , ""+e.getMessage());
                                 }
-                                else{ databaseManager.addLocationLog(locationString+"_"+ATS.mBatteryLevel+"_"+(ATS.app_foreground?"1":"0")+"_"+sharedPrefrencesManager.fetchData(ATSConstants.KEYS.TAG)); }
-                            }catch (Exception e){
-                                LOGS.e(TAG , ""+e.getMessage());
                             }
                         }catch (Exception e){
                         LOGS.e(TAG, ""+e.getMessage());
@@ -103,12 +105,12 @@ public class AtsLocationManager {
         createLocationRequest();
     }
 
-
     private void createLocationRequest() {
         locationRequest = LocationRequest.create();
         locationRequest.setInterval(ATS.mBuilder.LocationInterval);
         locationRequest.setFastestInterval(ATS.mBuilder.LocationInterval);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setSmallestDisplacement(ATS.mBuilder.smallestDisplacement);
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
 
         SettingsClient client = LocationServices.getSettingsClient(mContext);
@@ -134,7 +136,6 @@ public class AtsLocationManager {
 
     }
 
-
     @SuppressLint("WrongConstant")
     public void startLocationUpdates() {
         if(fusedLocationClient == null){
@@ -154,7 +155,6 @@ public class AtsLocationManager {
 
     }
 
-
     public void stopLocationUpdates(){
         try{
             fusedLocationClient.removeLocationUpdates(locationCallback);
@@ -163,8 +163,6 @@ public class AtsLocationManager {
         }
 
     }
-
-
 
     private JSONObject getLocationObject(Location location, JSONObject locationJsonObject) throws Exception {
         locationJsonObject.put("latitude", location.getLatitude());
@@ -175,8 +173,6 @@ public class AtsLocationManager {
         return locationJsonObject ;
 
     }
-
-
 
 
 

@@ -25,7 +25,7 @@ public class MainApplication extends Application {
                 .setAppId(""+authToken)
                 .fetchLocationWhenVehicleIsStop(false)
                 .enableLogs(true)
-                .setLocationInterval(6000)
+                .setLocationInterval(2000)
                 .setDeveloperMode(true)
                 .setNotificationTittle("Main Application Name")
                 .setNotificationContent("Some Content that will run once the location service is started.")
@@ -33,6 +33,7 @@ public class MainApplication extends Application {
 //                .setDisconnectedColor(Color.argb(0 , 255, 255, 102))
 //                .setSocketEndPoint("http://192.168.1.33:3027")
                 .setNotificationIcon(R.drawable.samll_notification_icon)
+                .setMinimumAccuracyForMeter(20)
                 .init();
 
     }
