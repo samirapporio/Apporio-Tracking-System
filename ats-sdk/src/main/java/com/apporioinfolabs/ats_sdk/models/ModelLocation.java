@@ -15,14 +15,18 @@ public class ModelLocation {
         location = new Location("");
     }
 
-    public Location setLocation(double latitude, double longitude, float accuracy, float bearing){
+    public Location setLocation(double latitude, double longitude, float accuracy, float bearing, float speed){
         location.setLatitude(latitude);
         location.setLongitude(longitude);
         location.setAccuracy(accuracy);
         location.setBearing(bearing);
+        location.setSpeed(speed);
         return location ;
     }
 
+    public Location getLocation(){
+        return location ;
+    }
 
 
 }

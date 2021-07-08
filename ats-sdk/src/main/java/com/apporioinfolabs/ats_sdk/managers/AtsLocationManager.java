@@ -5,6 +5,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import com.apporioinfolabs.ats_sdk.ATS;
 import com.apporioinfolabs.ats_sdk.di.ApplicationContext;
@@ -70,7 +72,8 @@ public class AtsLocationManager {
                                 String locationString = ""+ location.getLatitude()+"_"+location.getLongitude()+"_"+location.getAccuracy()+"_"+location.getBearing()+"_"+location.getTime() ;
                                 sharedPrefrencesManager.saveData(ATSConstants.KEYS.LOCATION, ""+ locationString);
 
-                                EventBus.getDefault().post(modelLocation.setLocation(location.getLatitude(),location.getLongitude(),location.getAccuracy(),location.getBearing()));
+
+                                EventBus.getDefault().post(modelLocation.setLocation(location.getLatitude(),location.getLongitude(),location.getAccuracy(),location.getBearing(), location.getSpeed()));
 
                                 notificationManager.updateRunningNotificationView(
                                         AppUtils.getLocationString(locationString)+
@@ -151,8 +154,6 @@ public class AtsLocationManager {
                 fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null /* Looper */);
             }
         }
-
-
     }
 
     public void stopLocationUpdates(){

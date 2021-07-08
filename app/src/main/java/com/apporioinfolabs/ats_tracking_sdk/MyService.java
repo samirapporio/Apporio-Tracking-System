@@ -20,7 +20,7 @@ public class MyService extends AtsLocationServiceClass {
 
 
     @Override
-    public void onDistanceUpdate(String distance) {
-        EventBus.getDefault().post(""+distance);
+    public void onDistanceUpdate(String distance, String speed) {
+        EventBus.getDefault().post(new EventDistanceSpeed( distance, speed));
     }
 }

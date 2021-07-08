@@ -41,6 +41,7 @@ public abstract class AtsLocationServiceClass  extends Service {
     private Timer mTimer = null;
     private LatLng latLng = null;
     private double distance = 0.0;
+    private double seconds = 0.0;
 
 
 
@@ -50,8 +51,6 @@ public abstract class AtsLocationServiceClass  extends Service {
     @Inject NotificationManager notificationManager;
     @Inject AtsLocationManager atsLocationManager ;
     @Inject DatabaseManager databaseManager ;
-
-
 
 
     @Override
@@ -104,10 +103,10 @@ public abstract class AtsLocationServiceClass  extends Service {
         try{
             if(intent != null){
                 if(intent.getBooleanExtra("RUN_METER",false)){
-                    ATS.mBuilder.runMeter = true;
+                    ATS.mBuilder.runMeter = false;
                     distance = 0;
                 }else{
-                    ATS.mBuilder.runMeter = false ;
+                    ATS.mBuilder.runMeter = true ;
                 }
             }
         }catch (Exception e){ }
@@ -126,6 +125,7 @@ public abstract class AtsLocationServiceClass  extends Service {
                     " SQL Location stash:"+(databaseManager.getAllLogsFromTable().size() + 1)+
                     " Battery: "+ATS.mBatteryLevel +
                     " State: "+(ATS.app_foreground ? "Foreground":"Background");
+
             notificationManager.updateRunningNotificationView(""+locationString+
                     " Battery: "+ATS.mBatteryLevel+
                     " State: "+(ATS.app_foreground?"Foreground":"Background")+
@@ -158,7 +158,7 @@ public abstract class AtsLocationServiceClass  extends Service {
 
 
     public abstract void onReceiveLocation(Location location);
-    public abstract void onDistanceUpdate(String distance);
+    public abstract void onDistanceUpdate(String distance, String speed);
 
 
     @Override
@@ -166,6 +166,7 @@ public abstract class AtsLocationServiceClass  extends Service {
         EventBus.getDefault().unregister(this);
         atsLocationManager.stopLocationUpdates();
         distance = 0;
+        ATS.mBuilder.runMeter = false ;
         super.onDestroy();
     }
 
@@ -174,7 +175,8 @@ public abstract class AtsLocationServiceClass  extends Service {
             if(latLng.latitude == 0.0){ latLng = new LatLng(location.getLatitude() , location.getLongitude()); }
             else{
                 distance = distance +Math.round(SphericalUtil.computeDistanceBetween(latLng, new LatLng(location.getLatitude(), location.getLongitude())));
-                onDistanceUpdate(""+distance);
+                Log.e("******#### SPEED",""+Math.round(location.getSpeed()));
+                onDistanceUpdate(""+distance, ""+mps_to_kmph(Math.round(location.getSpeed())));
                 latLng = new LatLng(location.getLatitude(), location.getLongitude());
             }
         }
@@ -194,5 +196,11 @@ public abstract class AtsLocationServiceClass  extends Service {
 
         }
     }
+
+
+    private float mps_to_kmph(float mps) {
+        return (float) (3.6 * mps);
+    }
+
 
 }
