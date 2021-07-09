@@ -33,4 +33,6 @@ dependencies {
 
     // implemented for testing
     implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'cat.ereza:customactivityoncrash:2.3.0'
+
 }

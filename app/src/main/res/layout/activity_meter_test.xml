@@ -3,135 +3,312 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
+    android:gravity="center|top"
     android:background="#000000">
 
-
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="20dp">
-        <TextView
+        android:orientation="vertical"
+        android:layout_margin="10dp"
+        android:background="@drawable/basic_initialization_background">
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Distance: "
-            android:layout_weight="1"
-            android:textColor="@color/white"
-            android:textSize="18dp"/>
-        <TextView
-            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="10dp">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/muted_black"
+                    android:textStyle="bold"
+                    android:text="Minimum Displacement"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="9dp"
+                    android:text="This tells that what minimum distance is required by device/vehicle to move for getting new location"
+                    android:textSize="12dp"
+                    android:textColor="@color/muted_black"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10 meters"
+                android:textColor="@color/white"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="@drawable/meter_background"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="0.0"
-            android:textSize="25dp"
-            android:id="@+id/distance_text"
-            android:textColor="#FD2B1C"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" meters"
-            android:textSize="20dp"
-            android:textColor="#FD2B1C"/>
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="10dp">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/muted_black"
+                    android:textStyle="bold"
+                    android:text="Fetching Interval"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Device will fetch location in every 6 seconds"
+                    android:textSize="12dp"
+                    android:textColor="@color/muted_black"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6 Seconds"
+                android:textColor="@color/white"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="@drawable/meter_background"/>
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="20dp">
-        <TextView
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/live_info_initialization_background">
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Current speed: "
-            android:layout_weight="1"
-            android:textColor="@color/white"
-            android:textSize="18dp"/>
-        <TextView
-            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:text="Current Location Accuracy"
+                android:textColor="@color/colorAccent"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textStyle="bold"
+                    android:textSize="12dp"
+                    android:id="@+id/accuracy_text"
+                    android:textColor="@color/colorAccent"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" meters"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorAccent"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="0"
-            android:textSize="25dp"
-            android:id="@+id/speed_text"
-            android:textColor="#FD2B1C"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" Km/hr"
-            android:textSize="20dp"
-            android:textColor="#FD2B1C"/>
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            android:gravity="center">
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:text="Location"
+                android:textColor="@color/colorAccent"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="- -"
+                    android:textStyle="bold"
+                    android:textSize="12dp"
+                    android:id="@+id/location_text"
+                    android:textColor="@color/colorAccent"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
     </LinearLayout>
-    <LinearLayout
+
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="20dp">
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Waiting Time: "
-            android:layout_weight="1"
-            android:textColor="@color/white"
-            android:textSize="18dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:textSize="25dp"
-            android:id="@+id/waiting_time"
-            android:textColor="#FD2B1C"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" seconds"
-            android:textSize="20dp"
-            android:textColor="#FD2B1C"/>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="20dp">
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Travel Time: "
-            android:layout_weight="1"
-            android:textColor="@color/white"
-            android:textSize="18dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:textSize="25dp"
-            android:id="@+id/travel_time"
-            android:textColor="#FD2B1C"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" seconds"
-            android:textSize="20dp"
-            android:textColor="#FD2B1C"/>
-    </LinearLayout>
-
-
-
-
-
-
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:gravity="center"
+        android:layout_margin="10dp"
+        android:background="@drawable/meter_background">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="20dp">
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Distance: "
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:textSize="18dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0.0"
+                android:textSize="25dp"
+                android:id="@+id/distance_text"
+                android:textColor="#FD2B1C"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" meters"
+                android:textSize="20dp"
+                android:textColor="#FD2B1C"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="20dp">
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Current speed: "
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:textSize="18dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="25dp"
+                android:id="@+id/speed_text"
+                android:textColor="#FD2B1C"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Km/hr"
+                android:textSize="20dp"
+                android:textColor="#FD2B1C"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="20dp">
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Waiting Time: "
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:textSize="18dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="25dp"
+                android:id="@+id/waiting_time"
+                android:textColor="#FD2B1C"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" seconds"
+                android:textSize="20dp"
+                android:textColor="#FD2B1C"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="20dp">
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Travel Time: "
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:textSize="18dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="25dp"
+                android:id="@+id/travel_time"
+                android:textColor="#FD2B1C"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" seconds"
+                android:textSize="20dp"
+                android:textColor="#FD2B1C"/>
+        </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+
+
+
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        android:gravity="center|bottom"
         android:layout_marginTop="10dp">
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
             android:id="@+id/start_stop_meter"
-            android:layout_marginRight="10dp"
-            android:text="Start Meter"/>
+            android:text="Start Meter"
+            android:textColor="@color/white"
+            android:textStyle="bold"/>
 
 
 

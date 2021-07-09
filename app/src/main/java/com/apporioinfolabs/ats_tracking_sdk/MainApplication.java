@@ -25,7 +25,7 @@ public class MainApplication extends Application {
                 .setAppId(""+authToken)
                 .fetchLocationWhenVehicleIsStop(false)
                 .enableLogs(true)
-                .setLocationInterval(2000)
+                .setLocationInterval(6000)
                 .setDeveloperMode(true)
                 .setNotificationTittle("Main Application Name")
                 .setNotificationContent("Some Content that will run once the location service is started.")
