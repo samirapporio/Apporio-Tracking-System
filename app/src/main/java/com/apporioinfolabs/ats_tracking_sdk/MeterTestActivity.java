@@ -13,12 +13,11 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,29 +27,31 @@ import androidx.annotation.RequiresPermission;
 import androidx.core.app.ActivityCompat;
 
 import com.apporioinfolabs.ats_sdk.ATS;
-import com.apporioinfolabs.ats_sdk.AtsLocationServiceClass;
-import com.apporioinfolabs.ats_sdk.utils.LOGS;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.Calendar;
-import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 public class MeterTestActivity extends Activity {
 
-    TextView  speedText, distanceText, travel_time, waiting_time, accuracy_text, location_text;
+    TextView  speedText, distanceText, travel_time, waiting_time, accuracy_text, location_text, speed_setter_text, distance_setter_text;
     Intent meterServiceintent ;
     Button startStopMeter;
+    Switch speed_based_Switch, displacement_based_Switch ;
     private Timer mTimer = null;
     private long recentLocationTime = 0;
     private Handler mHandler ;
 
     ShapeDrawable pgDrawable ;
+    int speedLock = 2;
+    float recentSpeed = 0 ;
+
+    int DisplacementBased = 1 ;
+    int SpeedBased = 2 ;
+    int LogicType = DisplacementBased ;
 
 
     @Override
@@ -64,6 +65,10 @@ public class MeterTestActivity extends Activity {
         waiting_time = findViewById(R.id.waiting_time);
         accuracy_text = findViewById(R.id.accuracy_text);
         location_text = findViewById(R.id.location_text);
+        displacement_based_Switch = findViewById(R.id.displacement_based_Switch);
+        speed_based_Switch = findViewById(R.id.speed_based_Switch);
+        distance_setter_text = findViewById(R.id.distance_setter_text);
+        speed_setter_text = findViewById(R.id.speed_setter_text);
 
         mHandler = new Handler();
         pgDrawable = new ShapeDrawable(new RoundRectShape(new float[] { 5, 5, 5, 5, 5, 5, 5, 5 },     null, null)); ;
@@ -91,7 +96,70 @@ public class MeterTestActivity extends Activity {
         });
 
         toggleButton();
+
+
+
+
+        displacement_based_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                speed_based_Switch.setChecked(!isChecked);
+                setCalculationLogic();
+            }
+        });
+
+
+        speed_based_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                displacement_based_Switch.setChecked(!isChecked);
+                setCalculationLogic();
+            }
+        });
+
+
+
+
+        speed_setter_text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MeterTestActivity.this, "SPEED", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        distance_setter_text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MeterTestActivity.this, "DISTANCE", Toast.LENGTH_SHORT).show();
+            }
+        });
+        setCalculationLogic();
     }
+
+    private void setCalculationLogic(){
+        if(displacement_based_Switch.isChecked()){
+            speed_setter_text.setText("0 km/h");
+            distance_setter_text.setText("10 meters");
+            ATS.mBuilder.smallestDisplacement = 10;
+            speed_setter_text.setBackgroundResource(R.drawable.meter_background_grey);
+            distance_setter_text.setBackgroundResource(R.drawable.meter_background_blue);
+            speed_setter_text.setClickable(false);
+            distance_setter_text.setClickable(true);
+            LogicType = DisplacementBased;
+        } else{
+            speed_setter_text.setText("2 Km/h");
+            distance_setter_text.setText("0 meters");
+            ATS.mBuilder.smallestDisplacement = 0;
+            speed_setter_text.setBackgroundResource(R.drawable.meter_background_blue);
+            distance_setter_text.setBackgroundResource(R.drawable.meter_background_grey);
+            speed_setter_text.setClickable(true);
+            distance_setter_text.setClickable(false);
+            LogicType = SpeedBased;
+        }
+    }
+
+
+
 
     private void startCatingValue(){
         if (ActivityCompat.checkSelfPermission(MeterTestActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MeterTestActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -101,7 +169,13 @@ public class MeterTestActivity extends Activity {
             distanceText.setText("0.0"); waiting_time.setText("0"); travel_time.setText("0");
             runService();
             ATS.startMeter();
-            mTimer.scheduleAtFixedRate(new OverAllTimertask(), ATS.mBuilder.LocationInterval, ATS.mBuilder.LocationInterval);
+
+            if(LogicType == DisplacementBased){
+                mTimer.scheduleAtFixedRate(new DisplacementBasedTimerTask(), ATS.mBuilder.LocationInterval, ATS.mBuilder.LocationInterval);
+            }else{
+                mTimer.scheduleAtFixedRate(new SpeedBasedTimerTask(), ATS.mBuilder.LocationInterval, ATS.mBuilder.LocationInterval);
+            }
+
         }
     }
 
@@ -110,6 +184,8 @@ public class MeterTestActivity extends Activity {
         distanceText.setText(""+eventDistanceSpeed.distance);
         speedText.setText(""+eventDistanceSpeed.speed);
         recentLocationTime = System.currentTimeMillis()/1000;
+        recentSpeed = Math.round(Float.parseFloat(""+eventDistanceSpeed.speed));
+
     }
 
 
@@ -118,7 +194,6 @@ public class MeterTestActivity extends Activity {
        setAccuracyProgress(location.getAccuracy());
        location_text.setText(""+location.getLatitude()+","+location.getLongitude());
     }
-
 
 
     @Override
@@ -160,7 +235,7 @@ public class MeterTestActivity extends Activity {
         }
     }
 
-    class OverAllTimertask extends TimerTask {
+    class DisplacementBasedTimerTask extends TimerTask {
         @Override
         public void run() {
             mHandler.post(new Runnable() {
@@ -177,6 +252,24 @@ public class MeterTestActivity extends Activity {
             });
         }
     }
+
+    class SpeedBasedTimerTask extends TimerTask {
+        @Override
+        public void run() {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    travel_time.setText(""+(Integer.parseInt(travel_time.getText().toString()) + (ATS.mBuilder.LocationInterval/1000)));
+                    if(recentSpeed <= speedLock){
+                        waiting_time.setText(""+(Integer.parseInt(waiting_time.getText().toString()) + (ATS.mBuilder.LocationInterval/1000)));
+                        speedText.setText(""+recentSpeed);
+                    }
+                }
+            });
+        }
+    }
+
+
 
     private void setAccuracyProgress(float accuracy){
         if(accuracy <= 13){
